@@ -7,7 +7,7 @@ volumes:
     name: ragna_cloud_app_uploads
 
 services:
-  app:
+  rag_app:
     image: ragna/rag-server:latest
     container_name: app
     restart: unless-stopped
