@@ -20,6 +20,10 @@ services:
       - no-new-privileges:true
     networks:
       - app_net
+      - ragna_net
+    depends_on:
+      - qdrant
+      - tika
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -65,3 +69,6 @@ services:
 networks:
   app_net:
     driver: bridge
+  ragna_net:
+    external: true
+    name: ragna_network
