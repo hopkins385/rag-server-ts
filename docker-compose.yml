@@ -24,6 +24,7 @@ services:
     depends_on:
       - qdrant
       - tika
+    cpus: 1
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -37,6 +38,7 @@ services:
       - no-new-privileges:true
     networks:
       - app_net
+    cpus: 4
 
   tika:
     image: apache/tika:3.0.0.0-BETA2
@@ -46,6 +48,7 @@ services:
       - no-new-privileges:true
     networks:
       - app_net
+    cpus: 4
 
   # ingestor:
   #   image: ghcr.io/nlmatics/nlm-ingestor:latest
