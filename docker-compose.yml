@@ -1,0 +1,67 @@
+name: rag_server
+
+volumes:
+  qdrant_data:
+  app_uploads:
+    external: true
+    name: ragna_cloud_app_uploads
+
+services:
+  app:
+    image: ragna/rag-server:latest
+    container_name: app
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - app_uploads:/app/uploads:rw
+    env_file:
+      - .env
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - app_net
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: unless-stopped
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__TELEMETRY_DISABLED=true
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - app_net
+
+  tika:
+    image: apache/tika:3.0.0.0-BETA2
+    container_name: tika
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - app_net
+
+  # ingestor:
+  #   image: ghcr.io/nlmatics/nlm-ingestor:latest
+  #   container_name: ingestor
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5010:5001
+
+  # unstructured:
+  #   image: downloads.unstructured.io/unstructured-io/unstructured-api:latest
+  #   container_name: unstructured
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8010:8000
+  #   environment:
+  #     - DO_NOT_TRACK=true
+  #     - UNSTRUCTURED_MEMORY_FREE_MINIMUM_MB=100
+  #     - DISABLE_NEST_ASYNCIO=True
+  #     # - SCARF_NO_ANALYTICS=true
+
+networks:
+  app_net:
+    driver: bridge

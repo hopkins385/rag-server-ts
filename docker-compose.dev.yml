@@ -1,0 +1,14 @@
+services:
+  app:
+    volumes:
+      - ./uploads:/app/uploads
+    ports:
+      - 3020:3020
+
+  qdrant:
+    ports:
+      - 6333:6333
+
+  tika:
+    ports:
+      - 9998:9998
