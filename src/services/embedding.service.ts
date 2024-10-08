@@ -122,7 +122,7 @@ export class EmbeddingService {
 
   async #searchVectorStore(payload: { embedding: number[]; recordIds: string[] }): Promise<SearchResultDocument[]> {
     try {
-      const result = await this.vectorStore.search('media', {
+      const result = await this.vectorStore.search(this.collectionName, {
         with_payload: {
           include: ['mediaId', 'recordId', 'text'],
         },
@@ -151,7 +151,7 @@ export class EmbeddingService {
       return docs;
       //
     } catch (e) {
-      logger.error(e);
+      logger.error('[search vector]', e);
       return [];
     }
   }
@@ -210,7 +210,7 @@ export class EmbeddingService {
         points: embeddingPoints,
       });
     } catch (e) {
-      logger.error(e);
+      logger.error('[upsert]', e);
       return { status: 'failed' };
     }
   }
@@ -245,22 +245,27 @@ export class EmbeddingService {
         } as SearchResultDocument;
       });
     } catch (e) {
-      logger.error(e);
+      logger.error('[reRank]', e);
       return [];
     }
   }
 
   async searchDocsByQuery(payload: { query: string; recordIds: string[] }): Promise<SearchResultDocument[]> {
-    // get the embedding vectors for the query
-    const embedding = await this.#getEmbedding(payload.query);
+    try {
+      // get the embedding vectors for the query
+      const embedding = await this.#getEmbedding(payload.query);
 
-    // search the vector store
-    const documents = await this.#searchVectorStore({ embedding, recordIds: payload.recordIds });
+      // search the vector store
+      const documents = await this.#searchVectorStore({ embedding, recordIds: payload.recordIds });
 
-    return documents;
+      return documents;
 
-    // rerank the documents based on the query
-    const rerankedDocuments = await this.#reRankDocuments({ query: payload.query, documents });
-    return rerankedDocuments;
+      // rerank the documents based on the query
+      const rerankedDocuments = await this.#reRankDocuments({ query: payload.query, documents });
+      return rerankedDocuments;
+    } catch (e) {
+      logger.error('[search docs]', e);
+      return [];
+    }
   }
 }

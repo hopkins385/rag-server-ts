@@ -1,4 +1,4 @@
-import { embedFileRequestSchema } from './../schemas/embedFileSchema';
+import { embedFileRequestSchema } from '../schemas/embedFileSchema';
 import { embedFileController } from '../controllers/embedFileController';
 import express from 'express';
 import { validateData } from '../middlewares/validationMiddleware';
