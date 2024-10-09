@@ -24,6 +24,7 @@ interface SearchResultDocument {
   mediaId: string;
   recordId: string;
   text: string;
+  score: number;
 }
 
 const logger = consola.create({}).withTag('EmbeddingService');
@@ -79,10 +80,11 @@ export class EmbeddingService {
       });
     });
 
-    // assign the embeddings to the documents
-    for (const document of documents) {
-      document.embedding = await this.#getEmbedding(document.text);
-    }
+    // assign the embeddings to the documents in parallel
+    const embeddings = await Promise.all(documents.map(document => this.#getEmbedding(document.text)));
+    documents.forEach((document, index) => {
+      document.embedding = embeddings[index];
+    });
 
     // upsert the documents into the vector store
     const { status } = await this.#upsertVectorIndex(documents, { resetCollection: options.resetCollection });
@@ -102,11 +104,16 @@ export class EmbeddingService {
     }
 
     try {
-      res = await this.openai.embeddings.create({
-        model: 'text-embedding-3-small',
-        input: text,
-        encoding_format: 'float',
-      });
+      res = await this.openai.embeddings.create(
+        {
+          model: 'text-embedding-3-small',
+          input: text,
+          encoding_format: 'float',
+        },
+        {
+          maxRetries: 3,
+        },
+      );
     } catch (e) {
       logger.error(`Failed to fetch embeddings. Error is: ${e}`);
       return [];
@@ -121,6 +128,8 @@ export class EmbeddingService {
   }
 
   async #searchVectorStore(payload: { embedding: number[]; recordIds: string[] }): Promise<SearchResultDocument[]> {
+    const threshold = 0.25;
+
     try {
       const result = await this.vectorStore.search(this.collectionName, {
         with_payload: {
@@ -140,15 +149,25 @@ export class EmbeddingService {
         limit: 6,
       });
 
+      if (!result || !result.length) {
+        logger.error(`Search response invalid. Response is: ${JSON.stringify(result)}`);
+        return [];
+      }
+
       const docs = result.map(doc => {
         return {
           mediaId: doc.payload?.mediaId || '',
           recordId: doc.payload?.recordId || '',
           text: doc.payload?.text || '',
+          score: doc.score,
         } as SearchResultDocument;
       });
 
-      return docs;
+      logger.info(`[search vector] found ${docs.length} documents with scores ${docs.map(doc => doc.score)}`);
+
+      const filteredDocs = docs.filter(doc => doc.score >= threshold);
+
+      return filteredDocs;
       //
     } catch (e) {
       logger.error('[search vector]', e);

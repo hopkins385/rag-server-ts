@@ -1,5 +1,5 @@
 services:
-  app:
+  rag_app:
     volumes:
       - ./uploads:/app/uploads
     ports:
