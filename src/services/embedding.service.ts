@@ -96,15 +96,13 @@ export class EmbeddingService {
   }
 
   async #getEmbedding(text: string | string[] | number[] | number[][]): Promise<number[]> {
-    let res: OpenAI.Embeddings.CreateEmbeddingResponse;
-
     if (!text || text.length < 1) {
       logger.info('text for embeeding empty!');
       return [];
     }
 
     try {
-      res = await this.openai.embeddings.create(
+      const res = await this.openai.embeddings.create(
         {
           model: 'text-embedding-3-small',
           input: text,
@@ -114,17 +112,17 @@ export class EmbeddingService {
           maxRetries: 3,
         },
       );
+
+      if (!res?.data || !res?.data[0]?.embedding) {
+        logger.error(`Embed text response invalid. Response is: ${JSON.stringify(res)}`);
+        return [];
+      }
+
+      return res.data[0].embedding;
     } catch (e) {
       logger.error(`Failed to fetch embeddings. Error is: ${e}`);
       return [];
     }
-
-    if (!res?.data || !res?.data[0]?.embedding) {
-      logger.error(`Embed text response invalid. Response is: ${JSON.stringify(res)}`);
-      return [];
-    }
-
-    return res.data[0].embedding;
   }
 
   async #searchVectorStore(payload: { embedding: number[]; recordIds: string[] }): Promise<SearchResultDocument[]> {
@@ -204,7 +202,10 @@ export class EmbeddingService {
     });
   }
 
-  async #upsertVectorIndex(documents: RagDocument[], options: { resetCollection?: boolean } = {}) {
+  async #upsertVectorIndex(
+    documents: RagDocument[],
+    options: { resetCollection?: boolean } = {},
+  ): Promise<{ status: string }> {
     try {
       const { exists: collectionExists } = await this.#collectionExists(this.collectionName);
       if (!collectionExists) {
