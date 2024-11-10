@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { embeddingService } from '../services';
-import type { EmbedFileRequest } from '../schemas/embedFileSchema';
+import type { DeleteEmbedFileRequest, EmbedFileRequest } from '../schemas/embedFileSchema';
 
 export const embedFileController = async (req: Request, res: Response) => {
   const { mediaId, recordId, mimeType, filePath } = req.body as EmbedFileRequest;
@@ -25,4 +25,17 @@ export const embedFileController = async (req: Request, res: Response) => {
   });
 
   res.json(response);
+};
+
+export const deleteEmbedFileController = async (req: Request, res: Response) => {
+  const { mediaId, recordIds } = req.body as DeleteEmbedFileRequest;
+
+  try {
+    const result = await embeddingService.deleteEmbedFile({ mediaId, recordIds });
+    console.log('Embedding deletion result', result);
+    res.json({ status: 'ok' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: 'error' });
+  }
 };

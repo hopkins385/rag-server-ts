@@ -41,6 +41,38 @@ export class EmbeddingService {
     console.log('EmbeddingService instantiated');
   }
 
+  async deleteEmbedFile(payload: { mediaId: string; recordIds: string[] }): Promise<{ status: string }> {
+    if (!payload.mediaId || !payload.recordIds || payload.recordIds.length < 1) {
+      throw new Error('Invalid payload');
+    }
+    try {
+      const result = await this.vectorStore.delete(this.collectionName, {
+        wait: true,
+        filter: {
+          must: [
+            {
+              key: 'mediaId',
+              match: {
+                any: [payload.mediaId],
+              },
+            },
+            {
+              key: 'recordId',
+              match: {
+                any: payload.recordIds,
+              },
+            },
+          ],
+        },
+      });
+
+      return result;
+    } catch (e) {
+      logger.error('[delete]', e);
+      throw new Error('Failed to delete documents from the vector store');
+    }
+  }
+
   async embedFile(payload: IEmbedFilePayload, options: { resetCollection?: boolean } = {}): Promise<RagDocument[]> {
     //
     const sanitizedPath = payload.path.replace(/(\.\.(\/|\\))/g, '');
