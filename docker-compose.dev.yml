@@ -1,5 +1,6 @@
 services:
   rag_app:
+    profiles: ['prod'] # This makes app service not start by default
     volumes:
       - ./uploads:/app/uploads
     ports:
