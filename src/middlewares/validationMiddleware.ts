@@ -4,10 +4,10 @@ import { z, ZodError } from 'zod';
 
 import { StatusCodes } from 'http-status-codes';
 
-export function validateData(schema: z.ZodObject<any, any>) {
+export function validateData(schema: z.ZodObject<any, any>, source: 'body' | 'query' | 'params' = 'body') {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req.body);
+      schema.parse(req[source]);
       next();
     } catch (error) {
       if (error instanceof ZodError) {

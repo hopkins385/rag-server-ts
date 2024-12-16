@@ -5,7 +5,7 @@ import { validateData } from '../middlewares/validationMiddleware';
 
 const embedFileRouter = express.Router();
 
-embedFileRouter.post('/file', validateData(embedFileRequestSchema), embedFileController);
-embedFileRouter.delete('/file', validateData(deleteEmbedFileRequestSchema), deleteEmbedFileController);
+embedFileRouter.post('/file', validateData(embedFileRequestSchema, 'body'), embedFileController);
+embedFileRouter.delete('/file', validateData(deleteEmbedFileRequestSchema, 'body'), deleteEmbedFileController);
 
 export default embedFileRouter;

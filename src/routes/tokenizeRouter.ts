@@ -5,6 +5,6 @@ import { tokenizeController } from '../controllers/tokenizeController';
 
 const tokenizeRouter = express.Router();
 
-tokenizeRouter.post('/text', validateData(tokenizeRequestSchema), tokenizeController);
+tokenizeRouter.post('/text', validateData(tokenizeRequestSchema, 'body'), tokenizeController);
 
 export default tokenizeRouter;

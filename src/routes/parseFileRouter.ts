@@ -5,6 +5,6 @@ import { parseFileController } from '../controllers/parseFileController';
 
 const parseFileRouter = express.Router();
 
-parseFileRouter.get('/', validateData(parseFileRequestSchema), parseFileController);
+parseFileRouter.get('/', validateData(parseFileRequestSchema, 'query'), parseFileController);
 
 export default parseFileRouter;

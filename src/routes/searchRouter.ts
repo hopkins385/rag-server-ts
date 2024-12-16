@@ -5,6 +5,6 @@ import { searchVectorController } from '../controllers/searchVectorController';
 
 const searchRouter = express.Router();
 
-searchRouter.post('/vector', validateData(searchVectorRequestSchema), searchVectorController);
+searchRouter.post('/vector', validateData(searchVectorRequestSchema, 'body'), searchVectorController);
 
 export default searchRouter;
