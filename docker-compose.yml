@@ -8,6 +8,7 @@ volumes:
 
 services:
   rag_app:
+    container_name: ragna-rag-server
     image: ghcr.io/hopkins385/rag-server:latest
     restart: unless-stopped
     working_dir: /app
