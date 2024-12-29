@@ -4,7 +4,7 @@ volumes:
   qdrant_data:
   app_uploads:
     external: true
-    name: ragna_cloud_app_uploads
+    name: ragna-studio-backend_app_uploads
 
 services:
   rag_app:
@@ -41,7 +41,7 @@ services:
     cpus: 4
 
   tika:
-    image: apache/tika:3.0.0.0
+    image: apache/tika:latest-full
     container_name: tika
     restart: unless-stopped
     security_opt:

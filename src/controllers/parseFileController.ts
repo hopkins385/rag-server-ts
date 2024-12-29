@@ -12,10 +12,13 @@ function getMimeType(filePath: string): string {
     case 'pdf':
       return 'application/pdf';
     case 'doc':
-    case 'docx':
       return 'application/msword';
+    case 'docx':
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
     case 'txt':
       return 'text/plain';
+    case 'eml':
+      return 'message/rfc822';
     default:
       return 'application/octet-stream';
   }
@@ -32,12 +35,14 @@ export const parseFileController = async (req: Request, res: Response) => {
       headers: {
         Accept: 'text/plain',
         'Content-Type': getMimeType(filePath),
+        // 'X-Tika-PDFOcrStrategy': 'ocr_only',
+        // 'X-Tika-PDFOextractInlineImages': true,
       },
       data: buffer,
     });
     res.json({ data: response.data });
-  } catch (err) {
-    consola.error(err);
+  } catch (err: any) {
+    consola.error(err?.message);
     res.status(500).json({ status: 'error' });
   }
 };
