@@ -6,25 +6,30 @@ export const embedFileController = async (req: Request, res: Response) => {
   const { mediaId, recordId, mimeType, filePath } = req.body as EmbedFileRequest;
   console.log('Request received', filePath);
 
-  const documents = await embeddingService.embedFile({
-    mediaId,
-    recordId,
-    mimeType,
-    path: filePath,
-  });
+  try {
+    const documents = await embeddingService.embedFile({
+      mediaId,
+      recordId,
+      mimeType,
+      path: filePath,
+    });
 
-  const response = documents.map(doc => {
-    return {
-      id: doc.id,
-      text: doc.text,
-      metadata: {
-        recordId: doc.metadata.recordId,
-        mediaId: doc.metadata.mediaId,
-      },
-    };
-  });
+    const response = documents.map(doc => {
+      return {
+        id: doc.id,
+        text: doc.text,
+        metadata: {
+          recordId: doc.metadata.recordId,
+          mediaId: doc.metadata.mediaId,
+        },
+      };
+    });
 
-  res.json(response);
+    res.json(response);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: 'error' });
+  }
 };
 
 export const deleteEmbedFileController = async (req: Request, res: Response) => {
