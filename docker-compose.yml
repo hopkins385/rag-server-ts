@@ -1,4 +1,4 @@
-name: rag_server
+name: ragna-rag-server
 
 volumes:
   qdrant_data:
@@ -9,7 +9,6 @@ volumes:
 services:
   rag_app:
     image: ghcr.io/hopkins385/rag-server:latest
-    container_name: rag_app
     restart: unless-stopped
     working_dir: /app
     volumes:
