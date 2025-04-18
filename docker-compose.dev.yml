@@ -1,8 +1,8 @@
 services:
   rag_app:
-    profiles: ['prod'] # This makes app service not start by default
+    # profiles: ['prod'] # This makes app service not start by default
     volumes:
-      - ./uploads:/app/uploads
+      - /Users/sven/var/ragna/ragna-cloud-mono/backend/uploads:/app/uploads
     ports:
       - 3020:3020
 

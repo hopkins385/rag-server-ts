@@ -8,11 +8,19 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "removeComments": true
   },
   "include": [
     "./*.js",
     "src/**/*.ts",
-    "test/**/*.ts",
+    "test/**/*.ts"
   ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

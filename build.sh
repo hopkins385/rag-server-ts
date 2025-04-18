@@ -12,6 +12,8 @@ DOCKERFILE="Dockerfile"
 echo "Building $IMAGE_NAME:$TAG..."
 
 # Build image
+#
+#   --no-cache \
 docker build \
   --tag "$IMAGE_NAME:$TAG" \
   --file "$DOCKERFILE" \

@@ -94,6 +94,9 @@ export class EmbeddingService {
       throw new Error('Failed to get file contents. Is the server reachable?');
     }
 
+    // replace all \n with space
+    text = text.replace('\n', ' ');
+
     const splitter = new RecursiveCharacterSplitter(this.tokenizerService, {
       chunkSize: 1000,
       chunkOverlap: 200,
@@ -102,9 +105,9 @@ export class EmbeddingService {
     const chunks = await splitter.split(text);
 
     // create rag documents
-    const documents = chunks.map(chunk => {
+    const documents = chunks.map(chunkText => {
       return new RagDocument({
-        text: chunk,
+        text: chunkText,
         metadata: {
           mediaId: payload.mediaId,
           recordId: payload.recordId,

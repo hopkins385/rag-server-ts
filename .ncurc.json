@@ -1,0 +1,5 @@
+{
+  "upgrade": false,
+  "interactive": true,
+  "reject": ["typescript", "eslint"]
+}

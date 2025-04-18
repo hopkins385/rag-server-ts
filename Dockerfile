@@ -14,9 +14,6 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
-# Set Docker as a non-root user
-USER node
-
 #
 # 🚀 Production Server
 #
@@ -27,7 +24,7 @@ WORKDIR /app
 # Copy only the necessary files
 COPY --chown=node:node --from=build /app/package.json ./package.json
 COPY --chown=node:node --from=build /app/node_modules ./node_modules
-COPY --chown=node:node --from=build /app/dist/src ./
+COPY --chown=node:node --from=build /app/dist ./
 
 # Set Docker as non-root user
 USER node
