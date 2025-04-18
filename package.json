@@ -1,6 +1,6 @@
 {
   "name": "rag-server-ts",
-  "version": "1.2.0",
+  "version": "0.2.0",
   "description": " A basic starter for an express.js API with Typescript",
   "main": "src/index.ts",
   "scripts": {
