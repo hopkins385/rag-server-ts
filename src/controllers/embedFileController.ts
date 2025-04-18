@@ -4,7 +4,6 @@ import type { DeleteEmbedFileRequest, EmbedFileRequest } from '../schemas/embedF
 
 export const embedFileController = async (req: Request, res: Response) => {
   const { mediaId, recordId, mimeType, filePath } = req.body as EmbedFileRequest;
-  console.log('Request received', filePath);
 
   try {
     const documents = await embeddingService.embedFile({
@@ -37,7 +36,6 @@ export const deleteEmbedFileController = async (req: Request, res: Response) => 
 
   try {
     const result = await embeddingService.deleteEmbedFile({ mediaId, recordIds });
-    console.log('Embedding deletion result', result);
     res.json({ status: 'ok' });
   } catch (e) {
     console.error(e);
