@@ -1,7 +1,7 @@
 {
   "name": "rag-server-ts",
-  "version": "0.2.0",
-  "description": " A basic starter for an express.js API with Typescript",
+  "version": "0.2.11",
+  "description": "RAGNA RAG Server in TypeScript",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
@@ -14,8 +14,8 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],
-  "author": "",
-  "license": "",
+  "author": "Sven Stadhouders",
+  "license": "UNLICENSED",
   "dependencies": {
     "@qdrant/js-client-rest": "^1.13.0",
     "@types/http-errors": "^2.0.4",
