@@ -95,7 +95,11 @@ export class EmbeddingService {
     }
 
     // replace all \n with space
-    text = text.replace('\n', ' ');
+    text = text.replace(/\n/g, ' ');
+    // replace all multiple spaces with single space
+    text = text.replace(/\s+/g, ' ');
+    // remove all leading and trailing spaces
+    text = text.trim();
 
     const splitter = new RecursiveCharacterSplitter(this.tokenizerService, {
       chunkSize: 1000,
