@@ -9,6 +9,7 @@ import { RecursiveCharacterSplitter } from '../utils/splitter/RecursiveCharacter
 import axios from 'axios';
 import { RagDocument } from './types';
 import { join } from 'path';
+import { record } from 'zod';
 
 type Vector = number[];
 export type Embedding = Vector;
@@ -200,7 +201,14 @@ export class EmbeddingService {
         } as SearchResultDocument;
       });
 
-      logger.info(`[search vector] found ${docs.length} documents with scores ${docs.map(doc => doc.score)}`);
+      logger.info(
+        `[search vector] found ${docs.length} documents with docs`,
+        docs.map(doc => ({
+          mediaId: doc.mediaId,
+          recordId: doc.recordId,
+          score: doc.score,
+        })),
+      );
 
       const filteredDocs = docs.filter(doc => doc.score >= threshold);
 
@@ -258,8 +266,8 @@ export class EmbeddingService {
         id: doc.id,
         vector: doc.embedding,
         payload: {
+          mediaId: doc.metadata.mediaId,
           recordId: doc.metadata.recordId,
-          mediaId: doc.metadata.recordId,
           text: doc.text,
         },
       }));
