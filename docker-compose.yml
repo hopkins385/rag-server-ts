@@ -9,7 +9,7 @@ volumes:
 services:
   rag_app:
     container_name: rag_server
-    image: ghcr.io/hopkins385/rag-server:0.2.13
+    image: ghcr.io/hopkins385/rag-server:latest
     restart: unless-stopped
     working_dir: /app
     volumes:
