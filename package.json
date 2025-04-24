@@ -1,6 +1,6 @@
 {
   "name": "rag-server-ts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "RAGNA RAG Server in TypeScript",
   "main": "src/index.ts",
   "scripts": {
