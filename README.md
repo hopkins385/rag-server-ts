@@ -1,4 +1,4 @@
-# RAGNA RAG Server TypeScript
+# RAGNA Studio - RAG Server
 
 A high-performance Retrieval-Augmented Generation (RAG) server built with TypeScript, Express.js, and modern vector databases. This server provides APIs for document parsing, embedding, and semantic search capabilities.
 
