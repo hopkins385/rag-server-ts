@@ -1,7 +1,7 @@
 {
   "name": "rag-server-ts",
   "version": "0.3.1",
-  "description": "RAGNA RAG Server in TypeScript",
+  "description": "A high-performance Retrieval-Augmented Generation (RAG) server built with TypeScript, Express.js, and modern vector databases",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
@@ -13,9 +13,30 @@
     "test": "jest",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
+  "keywords": [
+    "rag",
+    "retrieval-augmented-generation",
+    "vector-database",
+    "embeddings",
+    "semantic-search",
+    "typescript",
+    "express",
+    "qdrant",
+    "openai",
+    "cohere",
+    "document-processing",
+    "nlp"
+  ],
   "author": "Sven Stadhouders",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hopkins385/rag-server-ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hopkins385/rag-server-ts/issues"
+  },
+  "homepage": "https://github.com/hopkins385/rag-server-ts#readme",
   "dependencies": {
     "@qdrant/js-client-rest": "^1.13.0",
     "@types/http-errors": "^2.0.4",
